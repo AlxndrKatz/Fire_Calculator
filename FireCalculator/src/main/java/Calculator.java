@@ -11,7 +11,7 @@ public class Calculator {
             deposit = 100;
             withDrawal = annualWithdrawalPerCent * deposit;
             deposit = (withDrawal * 100) / annualWithdrawalPerCent;// См П.4 Задания
-            deposit = deposit - withDrawal;
+            deposit -= withDrawal;
 
             for (int i = year + 1; i < 21; i++) {
 
@@ -22,9 +22,9 @@ public class Calculator {
                     withDrawal = withDrawal * (1 + Constants.INFLATION_RATE[i] / 100);
                 }
 
-                deposit = deposit - withDrawal;
+                deposit -= withDrawal;
                 deltaMoex = (Constants.MOEX_RATE[i] / Constants.MOEX_RATE[i - 1]);
-                deposit = deposit * deltaMoex;
+                deposit *= deltaMoex;
 
             }
             if (deposit > 0.0) {
@@ -36,4 +36,3 @@ public class Calculator {
         return annualWithdrawalPerCent;
     }
 }
-
