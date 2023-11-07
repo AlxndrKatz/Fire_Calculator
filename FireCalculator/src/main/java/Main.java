@@ -8,7 +8,7 @@ public class Main {
         int calcInput = scanner.nextInt();
 
         if (InputCheck.check(calcInput)) {
-            double result = Calculator.calculate(calcInput);
+            double result = Calculator.calculate(calcInput-2002);
             System.out.println(result);
         }
     }
