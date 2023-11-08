@@ -4,7 +4,7 @@ public class InputCheck{
         return true;
     }
     private static void checkInput (int calcInput) throws Exception{
-        if (calcInput > 2021 || calcInput < 2002) {
+        if (calcInput > 19 || calcInput < 0) {
             throw new Exception("Exception 'Input is beyond range'");
         }
     }
