@@ -61,18 +61,18 @@ public class Calculator {
         return deposit;
     }
 
-    private static double applyAnnualWithdrawal(double deposit, double withDrawal) {
-        deposit -= withDrawal;
+    private static double applyAnnualWithdrawal(double deposit, double withdrawal) {
+        deposit -= withdrawal;
         return deposit;
     }
 
-    private static double applyInflation (double withDrawal, double inflation) {
-        withDrawal *= inflation;
-        return withDrawal;
+    private static double applyInflation (double withdrawal, double inflation) {
+        withdrawal *= inflation;
+        return withdrawal;
     }
 
     private static double setWithDrawalLogic(double deposit, double annualWithdrawalPerCent) {
-        double withDrawal = annualWithdrawalPerCent * deposit;
-        return withDrawal;
+        double withdrawal = annualWithdrawalPerCent * deposit;
+        return withdrawal;
     }
 }
