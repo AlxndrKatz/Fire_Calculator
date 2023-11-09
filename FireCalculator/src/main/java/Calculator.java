@@ -1,4 +1,5 @@
 public class Calculator {
+    
     public static double calculate(int calcInput) {
         int startWithdrawal = calcInput + 1;
         double annualWithdrawalPerCent = 0.5;
