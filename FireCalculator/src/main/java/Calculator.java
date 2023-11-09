@@ -1,41 +1,30 @@
 public class Calculator {
-
-
     public static double calculate(int calcInput) {
-        int year = calcInput;
+        int startWithdrawal = calcInput + 1;
         double annualWithdrawalPerCent = 0.5;
-        double grade = 0.5;
-        double deltaMoex;
         double deposit = 1;
         double withdrawal;
-        double percentage = 0.01;
-        double inflation;
-
-
-
+        
         while (deposit > 0.0) {
 
-            deposit = setDepositDefault();
-            withdrawal = setWithDrawalLogic(deposit, annualWithdrawalPerCent);
+            withdrawal = setWithdrawalLogic(deposit, annualWithdrawalPerCent);
             deposit = initializeDeposit(deposit, annualWithdrawalPerCent);
 
-            for (int i = year + 1; i < 21; i++) {
+            for (int year = startWithdrawal; year < Constants.MOEX_RATE.length; year++) {
 
-                inflation = (1 + (Constants.INFLATION_RATE[i]*percentage));
-                deltaMoex = (Constants.MOEX_RATE[i] / Constants.MOEX_RATE[i - 1]);
+                withdrawal = yearSequenceWithdrawal(year, withdrawal);
+                deposit = yearSequenceDeposit(year, deposit, withdrawal);
 
-                withdrawal = applyInflation(withdrawal, inflation);
-                deposit = applyAnnualWithdrawal(deposit, withdrawal);
-                deposit = applyDeltaMoex(deposit, deltaMoex);
             }
-
-            annualWithdrawalPerCent = adjustAnnualWithdrawalPerCent(annualWithdrawalPerCent,deposit, grade);
-
+            annualWithdrawalPerCent = adjustAnnualWithdrawalPerCent(annualWithdrawalPerCent, deposit);
         }
         return annualWithdrawalPerCent;
     }
 
-    private static double adjustAnnualWithdrawalPerCent(double annualWithdrawalPerCent, double deposit, double grade){
+    private static double adjustAnnualWithdrawalPerCent(double annualWithdrawalPerCent, double deposit) {
+
+        double grade = 0.5;
+
         if (deposit > 0.0) {
             annualWithdrawalPerCent += grade;
         } else {
@@ -45,34 +34,36 @@ public class Calculator {
     }
 
     private static double initializeDeposit(double deposit, double annualWithdrawalPerCent) {
-        double withDrawal = annualWithdrawalPerCent * deposit;
-        deposit = (withDrawal * 100) / annualWithdrawalPerCent;// См П.4 Задания
+
+        double withdrawal = annualWithdrawalPerCent * deposit;
+        deposit = (withdrawal * 100) / annualWithdrawalPerCent;// См П.4 Задания
 
         return deposit;
     }
 
-    private static double setDepositDefault() {
-        double deposit = 1;
-        return deposit;
-    }
+    private static double setWithdrawalLogic(double deposit, double annualWithdrawalPerCent) {
 
-    private static double applyDeltaMoex (double deltaMoex, double deposit) {
-        deposit *= deltaMoex;
-        return deposit;
-    }
+        double withdrawal = annualWithdrawalPerCent * deposit;
 
-    private static double applyAnnualWithdrawal(double deposit, double withdrawal) {
-        deposit -= withdrawal;
-        return deposit;
-    }
-
-    private static double applyInflation (double withdrawal, double inflation) {
-        withdrawal *= inflation;
         return withdrawal;
     }
 
-    private static double setWithDrawalLogic(double deposit, double annualWithdrawalPerCent) {
-        double withdrawal = annualWithdrawalPerCent * deposit;
+    private static double yearSequenceDeposit(int year, double deposit, double withdrawal) {
+
+        double deltaMoex = (Constants.MOEX_RATE[year] / Constants.MOEX_RATE[year - 1]);
+
+        deposit -= withdrawal;
+        deposit *= deltaMoex;
+
+        return deposit;
+    }
+
+    private static double yearSequenceWithdrawal(int year, double withdrawal) {
+        
+        double percentage = 0.01;
+        double inflation = (1 + (Constants.INFLATION_RATE[year] * percentage));
+        withdrawal *= inflation;
+
         return withdrawal;
     }
 }
